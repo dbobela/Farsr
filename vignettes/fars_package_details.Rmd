@@ -1,0 +1,119 @@
+---
+title: "fars_package_details"
+author: "D Bobela"
+date: "2022-06-01"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{fars_package_details}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+### Installing necessary libraries for the Vignette
+Farsr requires the following packages to run properly:
+```{r setup}
+library(dplyr)
+library(readr) 
+library(tidyr)
+library(graphics)
+library(maps)
+library(Farsr)
+```
+
+## General Details:
+NOTE: This package is an assignment for CourseEra Course "Building R Packages" week 4.
+Data along with functions were supplied by the instructor. This package contains functions for manipulating and summarizing FARS data. This vignette contains examples of each function in action. 
+\ 
+\
+## FARS: Fatality Analysis Reporting System (FARS)
+Data for this project came from: https://www-fars.nhtsa.dot.gov/Main/index.aspx.
+Data for 2013-2015 by instructor in the form of three files.
+\
+\
+File names are: accident_2013.csv.bz2 , accident_2014.csv.bz2, accident_2015.csv.bz2
+\
+\
+Access these files using: system.file("extdata", "filename", package = "Farsr"), where "filename" has the form "accident_year.csv.bz2". The examples below use these files to demonstrate the functionality of each function. 
+\ 
+\ 
+ ## Functions
+
+### fars_read(filename)
+This function uses readr::read_csv to read a .csv file from the filename provided by the user,and then create a dataframe from the data in the file. The function checks if the file exists. If it doesn't, it will print message. 
+\
+
+Example: 
+\
+```{r, message=TRUE, error=FALSE, warning=FALSE}
+#Make sure you're in the correct path to use the example data files
+filename <- system.file("extdata", "accident_2013.csv.bz2", package = "Farsr")
+test_df <- fars_read(filename)
+dim(test_df)
+colnames(test_df)
+
+```
+
+
+## make_filename(year)
+The purpose of this function is to create a dataframe that shows the accidents occuring in each month for each \code{years} provided by the user. This function takes creates a dataframe for each year in a list of years provided by the user. It takes a list of years, then uses functions make_filename, and fars_read to first generate a filename for a specific year, then create a dataframe for the file with that filename. Lastly, the dataframe has a "year" column added to it, and the columns "Month" and "Year" are selected for return.
+\
+Example: 
+  
+```{r, message=TRUE, error=FALSE, warning=FALSE}
+
+make_filename(2013)
+
+```
+
+## fars_read_years(years)
+This function will summarize the accidents in year for a set of years provided
+by the user. It takes a list of years, makes dataframes for each year using the
+"fars_read_years" function. Then using functions from dplyr, the dataframes are joined
+grouped by year, and Month. The number of each month / year is counted. Finally, the
+dataframe is spread by year and the counts for that year.
+\
+Example:
+  
+```{r, message=TRUE, error=FALSE,warning=FALSE}
+filepath <- dirname(system.file("extdata", "accident_2013.csv.bz2", package = "Farsr"))
+setwd(filepath) 
+test_df <- fars_summarize_years(c("2013","2014","2015"))
+dim(test_df)
+colnames(test_df)
+```
+
+
+## fars_map_state(state.num, year)
+The purpose of this function is to provide a state-wide map of accidents for a year provided by the user, for the state with code state.num. It plots the position of each accident using long and lat data provided by the data set "STATE". The function handles invalid state numbers and cases where there are no accidents to report.
+\
+Example: 
+  
+```{r, message=TRUE, error=FALSE, warning=FALSE}
+filepath <- dirname(system.file("extdata", "accident_2013.csv.bz2", package = "Farsr"))
+setwd(filepath) 
+fars_map_state("1","2013")
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

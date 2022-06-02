@@ -1,0 +1,15 @@
+Package: Farsr
+Title: Fatality Analysis Reporting System Data Tools
+Version: 0.0.0.9000
+Author: Dave Bobela
+Maintainer: Joe Developer <Joe.Developer@some.domain.net>
+Description: Package contains tools for manipulating and summarizing fars data. This is an example package used in an assignment for week 4 of Coursera Course "Building R Packages". The data is limited to 3 years for this assignment, but in general is  applicable to any data in the FARS database.
+License: GPL-3
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.2
+Suggests: 
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr
+Imports: dplyr, readr, tidyr, graphics, maps
